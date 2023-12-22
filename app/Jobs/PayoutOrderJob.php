@@ -38,30 +38,25 @@ class PayoutOrderJob implements ShouldQueue
     {
         // TODO: Complete this method
 
+        DB::beginTransaction();
         try{
-            // DB::beginTransaction();
 
-            $orderUserEmail=$this->order->affiliate->user->email;
-            $apiService->sendPayout($orderUserEmail, $this->order->subtotal);
 
             $this->order->update([
                 'payout_status' => Order::STATUS_PAID
             ]);
 
-
-
-
-            // DB::commit();
+            DB::commit();
         }
-        catch(\Exception $e){
-            // DB::rollBack();
+        catch(\RuntimeException $e){
+            DB::rollBack();
 
-            Log::error(["PayoutOrderJob@handle",[
-                'order_id' => $this->order->id,
-                'message' => $e->getMessage(),
-                'line' => $e->getLine(),
-                'stack' => $e->getTraceAsString(),
-            ]]);
+            $this->order->update([
+                'payout_status' => Order::STATUS_UNPAID
+            ]);
+
+            //throw exception
+            throw $e;
         }
     }
 }

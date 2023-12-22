@@ -29,8 +29,9 @@ class AffiliateService
     {
         // TODO: Complete this method
 
-        // check if email already exists, if so throw exception
-        if (User::where('email', $email)->exists()) {
+        // check if a user with the email already exists, if so throw exception
+        $userExists= User::where('email', $email)->first();
+        if ($userExists) {
             throw new AffiliateCreateException('Email already exists');
         }
 

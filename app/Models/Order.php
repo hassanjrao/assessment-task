@@ -27,8 +27,17 @@ class Order extends Model
         'commission_owed',
         'payout_status',
         'customer_email',
-        'created_at'
+        'created_at',
+        'external_order_id'
     ];
+
+
+    protected $appends=['order_id'];
+
+    public function getOrderIdAttribute()
+    {
+        return $this->external_order_id;
+    }
 
     public function merchant()
     {
