@@ -39,4 +39,14 @@ class Order extends Model
     {
         return $this->belongsTo(Affiliate::class);
     }
+
+    public function unPaid()
+    {
+        return $this->where('payout_status', self::STATUS_UNPAID);
+    }
+
+    public function paid()
+    {
+        return $this->where('payout_status', self::STATUS_PAID);
+    }
 }

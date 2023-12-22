@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        // Replace me with a brief explanation of why floats aren't the correct data type, and replace with the correct data type.
         Schema::create('affiliates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');

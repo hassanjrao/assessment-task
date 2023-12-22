@@ -36,4 +36,8 @@ class Affiliate extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function unPaidOrders(){
+        return $this->orders->where('payout_status', Order::STATUS_UNPAID);
+    }
 }
