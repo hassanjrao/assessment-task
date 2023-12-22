@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('payout_status')->default(Order::STATUS_UNPAID);
             $table->string('discount_code')->nullable();
             $table->timestamps();
+            //
         });
     }
 
