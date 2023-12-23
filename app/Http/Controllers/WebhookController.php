@@ -27,7 +27,7 @@ class WebhookController extends Controller
 
         $request->validate([
             'order_id' => 'required',
-            'subtotal_price' => 'required|numeric',
+            'subtotal_price' => 'required',
             'merchant_domain' => 'required',
             'discount_code' => 'required'
         ]);

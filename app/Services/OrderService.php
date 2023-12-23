@@ -42,7 +42,7 @@ class OrderService
         $this->affiliateService->register($merchant, $data['customer_email'], $data['customer_name'], $merchant->default_commission_rate);
 
 
-        $order = Order::create(
+        Order::create(
             [
                 'merchant_id' => $merchant->id,
                 'affiliate_id' => $merchant->affiliate->id,
