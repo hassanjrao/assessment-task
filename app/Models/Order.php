@@ -31,14 +31,6 @@ class Order extends Model
         'external_order_id'
     ];
 
-
-    protected $appends=['order_id'];
-
-    public function getOrderIdAttribute()
-    {
-        return $this->external_order_id;
-    }
-
     public function merchant()
     {
         return $this->belongsTo(Merchant::class);

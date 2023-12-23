@@ -7,6 +7,7 @@ use App\Models\Affiliate;
 use App\Models\Merchant;
 use App\Models\Order;
 use App\Models\User;
+use Carbon\Carbon;
 
 class MerchantService
 {
@@ -104,6 +105,26 @@ class MerchantService
             PayoutOrderJob::dispatch($order);
         }
 
+    }
+
+
+
+    public function orderStats(Merchant $merchant, string $from, string $to): array
+    {
+        $from = Carbon::parse($from);
+        $to = Carbon::parse($to);
+
+        $orders = Order::whereBetween('created_at', [$from, $to])
+            ->where('merchant_id', $merchant->id)
+        ->get();
+
+        $data = [
+            'count' => $orders->count(),
+            'revenue' => $orders->sum('subtotal'),
+            'commissions_owed' => $orders->whereNotNull('affiliate_id')->sum('commission_owed')
+        ];
+
+        return $data;
     }
 
 

@@ -8,11 +8,12 @@ use App\Services\MerchantService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class MerchantController extends Controller
 {
     public function __construct(
-        MerchantService $merchantService
+       protected MerchantService $merchantService
     ) {}
 
     /**
@@ -31,21 +32,14 @@ class MerchantController extends Controller
             "to" => "required|date"
         ]);
 
-        $from = Carbon::parse($request->from);
-        $to = Carbon::parse($request->to);
+        //get merchant
+        $merchant = $request->user()->merchant;
 
-        $user= $request->user();
+        //get order stats
+        $orderStats = $this->merchantService->orderStats($merchant, $request->from, $request->to);
 
-        $orders = Order::whereBetween('created_at', [$from, $to])
-            ->where('merchant_id', $user->merchant->id)
-        ->get();
 
-        $response = [
-            'count' => $orders->count(),
-            'revenue' => $orders->sum('subtotal'),
-            'commissions_owed' => $orders->whereNotNull('affiliate_id')->sum('commission_owed')
-        ];
+        return response()->json($orderStats);
 
-        return response()->json($response);
     }
 }
