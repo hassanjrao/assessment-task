@@ -33,7 +33,13 @@ class MerchantController extends Controller
         ]);
 
         //get merchant
-        $merchant = $request->user()->merchant;
+        $user = $request->user();
+
+        $merchant= $user->merchant;
+
+        if (!$merchant) {
+            return response()->json(['message' => 'Merchant not found'], 404);
+        }
 
         //get order stats
         $orderStats = $this->merchantService->orderStats($merchant, $request->from, $request->to);

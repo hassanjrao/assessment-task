@@ -61,7 +61,7 @@ class MerchantService
         ]);
 
         $user->merchant->update([
-            'display_name' => $data['name'], // 'display_name' => $data['name'] ?? '
+            'display_name' => $data['name'],
             'domain' => $data['domain'],
         ]);
     }
@@ -108,6 +108,14 @@ class MerchantService
     }
 
 
+    /**
+     * Get the order stats for a given merchant between two dates.
+     *
+     * @param Merchant $merchant
+     * @param string $from
+     * @param string $to
+     * @return array{count: int, revenue: float, commissions_owed: float}
+     */
 
     public function orderStats(Merchant $merchant, string $from, string $to): array
     {

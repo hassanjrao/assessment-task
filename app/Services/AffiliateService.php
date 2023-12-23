@@ -44,7 +44,6 @@ class AffiliateService
             ]
         );
 
-
         // create affiliate
         $affiliate = $user->affiliate()->create(
             [
@@ -57,7 +56,6 @@ class AffiliateService
 
         // send email
         Mail::to($email)->send(new AffiliateCreated($affiliate));
-
 
         return $affiliate;
     }
